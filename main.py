@@ -1,12 +1,19 @@
 import argparse
-import get_files
+import parse.parser
+import os
+
+delemeter = "\\" if os.name == "nt" else "/"
 
 
 def main(args):
     print(args)
-    if(args.download):
-        get_files.download_file(args)
-        get_files.unzip_file(args)
+    koreanParser = parse.parser.KoreanPatentParser(
+        id=args.output.split(delemeter)[-1], path=args.output)
+    koreanParser.add_xml_strings_to_wating_queue()
+    while(koreanParser.waiting_queue):
+        koreanParser.publish_to_processed_queue()
+        koreanParser.consume_processed_queue()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Parser for patent by KIPO')
