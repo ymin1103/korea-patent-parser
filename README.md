@@ -11,7 +11,7 @@ You may need git bash or WSL installed if you use Windows.
 2. Activate virtual environment - optional
 ```
 source venv/bin/activate - for linux
-source venv/Scripts/activate - for window
+source venv/Scripts/activate - for windows
 ```
 
 3. Install packages
@@ -50,7 +50,9 @@ python main.py -o "C:\Users\admin\Desktop\projects\KRPUAPBU02_D_20210930"
 ```
 You can extract JSON files from XML files in `-o` or `--output`.
 
-Output directory has to be specified.
+`-o` or `--output` means where the directory of the unzipped data using `get_files.py` is. 
+
+`-o` or `--output` has to be specified.
 ```
 usage: main.py [-h] [-o output_path]
 
