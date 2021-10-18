@@ -2,7 +2,7 @@ import glob
 import os
 import json
 from collections import deque
-from typing import List
+from typing import Deque, List
 from typing import Dict
 import bs4
 
@@ -113,7 +113,7 @@ class KoreanPatentParser():
             parsed_json['summary'] = self.get_summary(soup)
         return parsed_json
 
-    def write_to_json_file(self, file_path: str, processed_jsons: Dict[str, any]):
+    def write_to_json_file(self, file_path: str, processed_jsons: Deque):
         with open(file_path, "w", encoding="utf-8") as json_fp:
             while(processed_jsons):
                 processed_json = processed_jsons.popleft()
