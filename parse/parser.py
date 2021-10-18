@@ -10,6 +10,25 @@ delemeter = "\\" if os.name == "nt" else "/"
 
 
 class KoreanPatentParser():
+    """
+    ## Parser for free-access korean patent data by KIPO formatted in ST36
+    It can only process the data from `ods.kipris.or.kr` right now.
+    ### Attributes
+    - `id`: Id of the `KoreanPatentParser` instance is from `path`.
+        - For example, if `path` is `/c/Users/admin/Desktop/My Projects/KRPUAPBU02_D_20210930`, `id` will be like `KRPUAPBU02_D_20210930`
+    - `path`: Name of the directory to be processed.
+        - For example, it can be like `/c/Users/admin/Desktop/My Projects/KRPUAPBU02_D_20210930`
+    - `json_path`: Path of processed json file stored. Same with `path`.
+    - `encoding`: Encoding system of the xml file to be processed. It should be `euc-kr`
+    - `capacity`: Max capacity of the waiting queue. Default value is 100
+    - `waiting_queue`: Store xml file paths to be processed
+    - `processed_queue`: Store processed json file to be comsumed
+    - `xml_list_path`:
+        - We need txt file with the xml file paths to be processed.
+        - And KIPRIS will provide the txt file named like `KR_OPN_20210930_XMLLIST.txt`
+        - Its absolute path will be stored in `xml_list_path`.
+    """
+
     def __init__(self, id, path, capacity=100):
         self.id = id
         self.path = path
@@ -35,6 +54,9 @@ class KoreanPatentParser():
                 self.waiting_queue.append(xml_file_path)
 
     def publish_to_processed_queue(self):
+        """
+        Consume the `self.waiting_queue` and publish to the `self.processed_queue` until the `self.waiting_queue` get empty.
+        """
         while(self.waiting_queue):
             if(len(self.processed_queue) >= self.capacity):
                 print("Exceeded Capacity of Queue. Please consume the processed queue")
@@ -45,6 +67,14 @@ class KoreanPatentParser():
             self.processed_queue.append(parsed_json)
 
     def consume_processed_queue(self):
+        """
+        Consume the `self.processed_queue`.
+
+        Following operation may be executed.
+        - Writing in json file
+        - Publish to Message Queue
+        - And other operations
+        """
         if(not self.processed_queue):
             return
         processed_jsons = deque([])

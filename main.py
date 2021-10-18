@@ -6,6 +6,13 @@ delemeter = "\\" if os.name == "nt" else "/"
 
 
 def main(args):
+    """
+    Process the xml files in directory in argument
+
+    1. Add xml file paths to waiting queue
+    2. Consume the waiting queue and publish to the processed queue 
+    3. Comsume the processed queue
+    """
     print(args)
     koreanParser = parse.parser.KoreanPatentParser(
         id=args.output.split(delemeter)[-1], path=args.output)

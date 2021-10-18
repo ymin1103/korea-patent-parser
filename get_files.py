@@ -7,6 +7,11 @@ delemeter = "\\" if os.name == "nt" else "/"
 
 
 def unzip_file(zip_file_path):
+    """
+    Unzip the zip file.
+
+    absolute path of the zip file is needed.
+    """
     folder_path = f"\"{zip_file_path[1:-5]}\""
     command = f"unzip {zip_file_path} -d {folder_path}"
     subprocess.run(command)
@@ -14,6 +19,9 @@ def unzip_file(zip_file_path):
 
 
 def get_product_code(args) -> str:
+    """
+    Return the product code of the file to be downloaded
+    """
     codes = {
         "open": "KRPUAPBU02",
         "reg": "KRPUGDBU02"
@@ -22,16 +30,27 @@ def get_product_code(args) -> str:
 
 
 def get_attach_file_id(args) -> str:
+    """
+    Return the file id to be downloaded
+    """
     product_code = get_product_code(args)
     return f"{product_code}_{args.date}{args.cycle.upper()}"
 
 
 def get_file_name(args) -> str:
+    """
+    Return the file name to be downloaded
+    """
     product_code = get_product_code(args)
     return f"{product_code}_{args.cycle.upper()}_{args.date}"
 
 
-def download_file(args):
+def download_file(args) -> str:
+    """
+    Download patent data ZIP file with options in argument
+
+    Return absolute path of the downloaded ZIP file.
+    """
     product_code = get_product_code(args)
     attached_file_id = get_attach_file_id(args)
     file_name = get_file_name(args)
