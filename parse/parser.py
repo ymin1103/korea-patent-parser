@@ -32,8 +32,7 @@ class KoreanPatentParser():
     def __init__(self, id, path, capacity=100):
         self.id = id
         self.path = path
-        self.json_path = delemeter.join(os.path.join(
-            os.path.dirname(__file__)).split(delemeter)[:-2]) + delemeter + self.id
+        self.json_path = path
         self.encoding = "euc-kr"
         self.capacity = capacity
         self.waiting_queue = deque([])
@@ -50,7 +49,8 @@ class KoreanPatentParser():
         with open(self.xml_list_path, encoding=self.encoding) as xml_list_path:
             while(True):
                 d = self.path.split(delemeter)[-1].split("_")[-1]
-                xml_file_name = xml_list_path.readline().rstrip()[2:].replace("/", delemeter).replace("\\", delemeter)
+                xml_file_name = xml_list_path.readline().rstrip()[2:].replace(
+                    "/", delemeter).replace("\\", delemeter)
                 xml_file_path = f"{self.path}{delemeter}{d}{delemeter}{xml_file_name}"
                 if(xml_file_name == ""):
                     break
