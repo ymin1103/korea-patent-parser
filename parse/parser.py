@@ -44,6 +44,9 @@ class KoreanPatentParser():
             os.mkdir(self.json_path)
 
     def add_xml_strings_to_wating_queue(self):
+        """
+        Add xml path strings in `self.xml_list_path` to `self.waiting_queue`.
+        """
         with open(self.xml_list_path, encoding=self.encoding) as xml_list_path:
             while(True):
                 d = self.path.split(delemeter)[-1].split("_")[-1]
