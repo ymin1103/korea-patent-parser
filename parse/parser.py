@@ -2,7 +2,7 @@ import glob
 import os
 import json
 from collections import deque
-from typing import List
+from typing import Deque, List
 from typing import Dict
 import bs4
 
@@ -10,11 +10,29 @@ delemeter = "\\" if os.name == "nt" else "/"
 
 
 class KoreanPatentParser():
+    """
+    ## Parser for free-access korean patent data by KIPO formatted in ST36
+    It can only process the data from `ods.kipris.or.kr` right now.
+    ### Attributes
+    - `id`: Id of the `KoreanPatentParser` instance is from `path`.
+        - For example, if `path` is `/c/Users/admin/Desktop/My Projects/KRPUAPBU02_D_20210930`, `id` will be like `KRPUAPBU02_D_20210930`
+    - `path`: Name of the directory to be processed.
+        - For example, it can be like `/c/Users/admin/Desktop/My Projects/KRPUAPBU02_D_20210930`
+    - `json_path`: Path of processed json file stored. Same with `path`.
+    - `encoding`: Encoding system of the xml file to be processed. It should be `euc-kr`
+    - `capacity`: Max capacity of the waiting queue. Default value is 100
+    - `waiting_queue`: Store xml file paths to be processed
+    - `processed_queue`: Store processed json file to be comsumed
+    - `xml_list_path`:
+        - We need txt file with the xml file paths to be processed.
+        - And KIPRIS will provide the txt file named like `KR_OPN_20210930_XMLLIST.txt`
+        - Its absolute path will be stored in `xml_list_path`.
+    """
+
     def __init__(self, id, path, capacity=100):
         self.id = id
         self.path = path
-        self.json_path = delemeter.join(os.path.join(
-            os.path.dirname(__file__)).split(delemeter)[:-2]) + delemeter + self.id
+        self.json_path = path
         self.encoding = "euc-kr"
         self.capacity = capacity
         self.waiting_queue = deque([])
@@ -25,16 +43,23 @@ class KoreanPatentParser():
             os.mkdir(self.json_path)
 
     def add_xml_strings_to_wating_queue(self):
+        """
+        Add xml path strings in `self.xml_list_path` to `self.waiting_queue`.
+        """
         with open(self.xml_list_path, encoding=self.encoding) as xml_list_path:
             while(True):
                 d = self.path.split(delemeter)[-1].split("_")[-1]
-                xml_file_name = xml_list_path.readline().rstrip()[2:].replace("/", delemeter).replace("\\", delemeter)
+                xml_file_name = xml_list_path.readline().rstrip()[2:].replace(
+                    "/", delemeter).replace("\\", delemeter)
                 xml_file_path = f"{self.path}{delemeter}{d}{delemeter}{xml_file_name}"
                 if(xml_file_name == ""):
                     break
                 self.waiting_queue.append(xml_file_path)
 
     def publish_to_processed_queue(self):
+        """
+        Consume the `self.waiting_queue` and publish to the `self.processed_queue` until the `self.waiting_queue` get empty.
+        """
         while(self.waiting_queue):
             if(len(self.processed_queue) >= self.capacity):
                 print("Exceeded Capacity of Queue. Please consume the processed queue")
@@ -45,6 +70,14 @@ class KoreanPatentParser():
             self.processed_queue.append(parsed_json)
 
     def consume_processed_queue(self):
+        """
+        Consume the `self.processed_queue`.
+
+        Following operation may be executed.
+        - Writing in json file
+        - Publish to Message Queue
+        - And other operations
+        """
         if(not self.processed_queue):
             return
         processed_jsons = deque([])
@@ -80,7 +113,7 @@ class KoreanPatentParser():
             parsed_json['summary'] = self.get_summary(soup)
         return parsed_json
 
-    def write_to_json_file(self, file_path: str, processed_jsons: Dict[str, any]):
+    def write_to_json_file(self, file_path: str, processed_jsons: Deque):
         with open(file_path, "w", encoding="utf-8") as json_fp:
             while(processed_jsons):
                 processed_json = processed_jsons.popleft()
