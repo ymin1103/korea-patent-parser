@@ -56,9 +56,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Parser for patent by KIPO')
     # Date patent data published
     parser.add_argument('-d', '--date', metavar='date', type=str)
-    # Cycle type of patent data // A day is default
+    # Cycle type of patent data // A day is only available now
     parser.add_argument('-c', '--cycle', metavar='date',
-                        type=str, default="d", nargs=1)
+                        type=str, default="d", choices=["d"])
     # Document type of patent data // Either 'open' or 'reg' is allowed
     parser.add_argument('-t', '--type', metavar='type',
                         type=str, choices=['open', 'reg'])
@@ -67,7 +67,8 @@ if __name__ == "__main__":
                         default="ods.kipris.or.kr/ods/KpodsFileDown.do")
     # Path of the downloaded compressed file
     parser.add_argument('-o', '--output', metavar="output_path",
-                        type=str, default=delemeter.join(os.path.abspath(__file__).split(delemeter)[:-2])
+                        type=str, default=delemeter.join(
+                            os.path.abspath(__file__).split(delemeter)[:-2])
                         )
     args = parser.parse_args()
     main(args)
