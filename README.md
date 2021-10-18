@@ -2,7 +2,12 @@
 Parser for patent data by KIPO
 Supports downloading patent data ZIP file from [here](http://ods.kipris.or.kr/) and transforming XML files to JSON files.
 
-You may need git bash or WSL installed if you use Windows.
+You may need git bash or WSL installed if you use windows.
+
+### Script description
+
+`get_files.py` : Download patent data ZIP file and unzip the file after download it.
+`main.py` : Process XML files in a directory generated after running `get_files.py` and storing them into json files.
 
 ### Before use this script
 
