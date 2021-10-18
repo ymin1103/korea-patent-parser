@@ -27,6 +27,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Parser for patent by KIPO')
     # Path of the uncompressed folder with patent data
-    parser.add_argument('-o', '--output', metavar="output_path", type=str)
+    parser.add_argument('-d', '--directory',
+                        metavar="directory_path", type=str)
     args = parser.parse_args()
     main(args)
