@@ -52,13 +52,13 @@ optional arguments:
 ```
 2. Run `main.py`
 ```
-python main.py -o "C:\Users\admin\Desktop\projects\KRPUAPBU02_D_20210930"
+python main.py -d "C:\Users\admin\Desktop\projects\KRPUAPBU02_D_20210930"
 ```
 You can extract JSON files from XML files in `-o` or `--output`.
 
-`-o` or `--output` means where the directory of the unzipped data using `get_files.py` is. 
+`-d` or `--directory` means where the directory of the unzipped data using `get_files.py` is. 
 
-`-o` or `--output` has to be specified.
+`-d` or `--directory` has to be specified.
 ```
 usage: main.py [-h] [-o output_path]
 
@@ -66,7 +66,7 @@ Parser for patent by KIPO
 
 optional arguments:
   -h, --help            show this help message and exit
-  -o output_path, --output output_path
+  -d directory_path, --directory directory_path
 ```
 Output json file will be like below.
 ```
