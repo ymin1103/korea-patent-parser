@@ -1,8 +1,9 @@
 import argparse
 import parse.parser
 import os
+import re
 
-delemeter = "\\" if os.name == "nt" else "/"
+delemeter = r'\'' if os.name == "nt" else r'/'
 
 
 def main(args):
@@ -15,7 +16,8 @@ def main(args):
     """
     print(args)
     koreanParser = parse.parser.KoreanPatentParser(
-        id=args.output.split(delemeter)[-1], path=args.output)
+        id=re.sub('[\\/]', delemeter, args.directory).split(delemeter)[-1],
+        path=args.directory)
     koreanParser.add_xml_strings_to_wating_queue()
     while(koreanParser.waiting_queue):
         koreanParser.publish_to_processed_queue()
