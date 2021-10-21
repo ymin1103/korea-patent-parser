@@ -4,6 +4,15 @@ Supports downloading patent data ZIP file from [here](http://ods.kipris.or.kr/) 
 
 You may need git bash or WSL installed if you use windows.
 
+### Purpose of the project
+
+- Automation of the job processing XML files for storing them to search engine pipeline
+
+### Used libraries
+
+- BeautifulSoup
+- PIL
+
 ### Script description
 
 `get_files.py` : Download patent data ZIP file and unzip the file after download it.
@@ -76,3 +85,9 @@ Output json file will be like below.
 {"title": "성형 장치를 운용하기 위한 성형 방법", "application_num": "10-2021-0017025", "application_date": "2021-02-05", "open_num": "-", "open_date": "2021-09-30", "reg_num": "-", "reg_date": "-", "applicant": ["킹 스틸 머쉬너리 씨오., 엘티디."], "inventor": ["예 량-후이", "첸 칭-하오", "리 이-충"], "summary": "\n[과제] 성형 장치를 운용하기 위한 성형 방법의 제공.\n[해결수단] 본 발명의 성형 방법은, 제1 금형과, 상기 제1 금형에 대응하는 제2 금형을 포함하는 성형 장치를 제공하는 공정과, 상기 제1 금형을 상기 제2 금형을 향하여 이동시켜, 제1 금형 캐비티를 형성하는 공정과, 상기 제1 금형 캐비티에 기체를 공급하는 공정과, 상기 제1 금형 캐비티에 재료를 주입하는 공정과, 상기 제1 금형을 상기 제2 금형으로부터 이격되게 이동시켜, 제2 금형 캐비티를 형성하고, 상기 기체의 적어도 일부를 상기 성형 장치로부터 배출하는 공정을 포함하며, 그 중, 상기 제1 금형 캐비티의 제1 부피가, 상기 제2 금형 캐비티의 제2 부피보다 실질적으로 작다.\n"}
 
 ```
+
+### TO-DO LIST
+
+- Automation of whole process
+- Processing image files in patent data
+ 
