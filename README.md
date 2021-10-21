@@ -21,15 +21,22 @@ You may need git bash or WSL installed if you use windows.
 
 ### Before use this script
 
-1. Install `virtualenv` package - optional
+You have to install `python` and `pip` in advance.
 
-2. Activate virtual environment - optional
+1. Clone this repository
+```
+git clone https://github.com/ymin1103/korea-patent-parser.git
+```
+
+2. Install `virtualenv` package - optional
+
+3. Activate virtual environment - optional
 ```
 source venv/bin/activate - for linux
 source venv/Scripts/activate - for windows
 ```
 
-3. Install packages
+4. Install packages
 ```
 pip install -r requirements.txt
 ```
