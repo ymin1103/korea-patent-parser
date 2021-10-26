@@ -59,8 +59,8 @@ def download_file(args) -> str:
         "productCd": product_code,
         "fileNm": file_name
     }
-    flatized_params = "&".join([f"{k}={v}" for k, v in params.items()])
-    command = f"curl -XGET {args.url}?{flatized_params} -o \"{args.output}{delemeter}{file_name}.zip\""
+    flatted_params = "&".join([f"{k}={v}" for k, v in params.items()])
+    command = f"curl -XGET {args.url}?{flatted_params} -o \"{args.output}{delemeter}{file_name}.zip\""
     subprocess.run(command)
     return f"\"{args.output}{delemeter}{file_name}.zip\""
 
@@ -89,5 +89,5 @@ if __name__ == "__main__":
                         type=str, default=delemeter.join(
                             os.path.abspath(__file__).split(delemeter)[:-2])
                         )
-    args = parser.parse_args()
-    main(args)
+    main_args = parser.parse_args()
+    main(main_args)
