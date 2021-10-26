@@ -39,7 +39,7 @@ class KoreanPatentParser():
         self.processed_queue = deque([])
         self.xml_list_path = glob.glob(f"{self.path}/**/*_XMLLIST.txt")[0]
 
-        if(not os.path.isdir(self.json_path)):
+        if not os.path.isdir(self.json_path):
             os.mkdir(self.json_path)
 
     def add_xml_strings_to_wating_queue(self):
@@ -47,12 +47,12 @@ class KoreanPatentParser():
         Add xml path strings in `self.xml_list_path` to `self.waiting_queue`.
         """
         with open(self.xml_list_path, encoding=self.encoding) as xml_list_path:
-            while(True):
+            while True:
                 d = self.path.split(delemeter)[-1].split("_")[-1]
                 xml_file_name = xml_list_path.readline().rstrip()[2:].replace(
                     "/", delemeter).replace("\\", delemeter)
                 xml_file_path = f"{self.path}{delemeter}{d}{delemeter}{xml_file_name}"
-                if(xml_file_name == ""):
+                if xml_file_name == "":
                     break
                 self.waiting_queue.append(xml_file_path)
 
@@ -60,8 +60,8 @@ class KoreanPatentParser():
         """
         Consume the `self.waiting_queue` and publish to the `self.processed_queue` until the `self.waiting_queue` get empty.
         """
-        while(self.waiting_queue):
-            if(len(self.processed_queue) >= self.capacity):
+        while self.waiting_queue:
+            if len(self.processed_queue) >= self.capacity:
                 print("Exceeded Capacity of Queue. Please consume the processed queue")
                 return
 
@@ -78,7 +78,7 @@ class KoreanPatentParser():
         - Publish to Message Queue
         - And other operations
         """
-        if(not self.processed_queue):
+        if not self.processed_queue:
             return
         processed_jsons = deque([])
         for _ in range(len(self.processed_queue)):
@@ -115,7 +115,7 @@ class KoreanPatentParser():
 
     def write_to_json_file(self, file_path: str, processed_jsons: Deque):
         with open(file_path, "w", encoding="utf-8") as json_fp:
-            while(processed_jsons):
+            while processed_jsons:
                 processed_json = processed_jsons.popleft()
                 json_fp.write(json.dumps(processed_json,
                                          ensure_ascii=False) + "\n")
@@ -125,14 +125,14 @@ class KoreanPatentParser():
 
     def get_number(self, soup: bs4.BeautifulSoup, tag_name: str) -> str:
         application_number_soup = soup.find(tag_name)
-        if(application_number_soup):
+        if application_number_soup:
             return application_number_soup.text
         else:
             return "-"
 
     def get_date(self, soup: bs4.BeautifulSoup, tag_name: str) -> str:
         application_date_soup = soup.find(tag_name)
-        if(application_date_soup):
+        if application_date_soup:
             return application_date_soup.text.replace("년", "-").replace("월", "-").replace("일", "")
         else:
             return "-"
@@ -143,21 +143,21 @@ class KoreanPatentParser():
         for applicant_soup in applicant_soups:
             applicant_name_soup = applicant_soup.find(
                 "kr_orgname") or applicant_soup.find("kr_name")
-            if(applicant_name_soup):
+            if applicant_name_soup:
                 names.append(applicant_name_soup.text)
         return names
 
     def get_summary(self, soup: bs4.BeautifulSoup) -> str:
         summary = ""
         summary_soup = soup.find('summary')
-        if(summary_soup):
+        if summary_soup:
             return summary_soup.text
         else:
             return summary
 
     def get_claims(self, soup: bs4.BeautifulSoup) -> List[str]:
         claim_text_soup = soup.find_all("claim-text")
-        if(claim_text_soup):
+        if claim_text_soup:
             return [e.text for e in claim_text_soup]
         else:
             return []

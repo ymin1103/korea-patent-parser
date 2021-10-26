@@ -19,7 +19,7 @@ def main(args):
         id=re.sub('[\\/]', delemeter, args.directory).split(delemeter)[-1],
         path=args.directory)
     koreanParser.add_xml_strings_to_wating_queue()
-    while(koreanParser.waiting_queue):
+    while koreanParser.waiting_queue:
         koreanParser.publish_to_processed_queue()
         koreanParser.consume_processed_queue()
 
@@ -29,5 +29,5 @@ if __name__ == "__main__":
     # Path of the uncompressed folder with patent data
     parser.add_argument('-d', '--directory',
                         metavar="directory_path", type=str)
-    args = parser.parse_args()
-    main(args)
+    main_args = parser.parse_args()
+    main(main_args)
